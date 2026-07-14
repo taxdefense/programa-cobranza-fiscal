@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /inscripcion.html
+Disallow: /confirmacion.html
+Disallow: /acceso.html
+Sitemap: https://curso.juridicamente.cl/sitemap.xml

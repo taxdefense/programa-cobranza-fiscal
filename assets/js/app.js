@@ -34,10 +34,13 @@
     if (el) track(el.getAttribute('data-evt'), { label: (el.textContent || '').trim().slice(0, 60) });
   });
 
-  /* Apertura de acordeones (FAQ / temario) */
+  /* Apertura de acordeones: faq_open para FAQ, accordion_open para el resto */
+  var isFaqPage = /preguntas\.html$/.test(location.pathname);
   document.querySelectorAll('details.acc').forEach(function (d) {
     d.addEventListener('toggle', function () {
-      if (d.open) track('accordion_open', { q: (d.querySelector('summary').textContent || '').trim().slice(0, 80) });
+      if (!d.open) return;
+      var evt = (isFaqPage || d.closest('#faq')) ? 'faq_open' : 'accordion_open';
+      track(evt, { q: (d.querySelector('summary').textContent || '').trim().slice(0, 80) });
     });
   });
 
