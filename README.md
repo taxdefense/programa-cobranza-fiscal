@@ -2,6 +2,10 @@
 
 Maqueta navegable estática (HTML/CSS/JS puro) del sitio de lanzamiento. **No procesa pagos, no envía formularios, no instala seguimiento real.** Marca: Jurídicamente / Defensor del Contribuyente.
 
+## Versiones
+
+El proyecto está versionado con git (V0 → V4.1: original, arquitectura/copy, UX/UI, confianza/videos, calidad técnica, fix de navegación). `git log --oneline` muestra el historial; la V0 original también está copiada en `_versiones/v0-original/`. La auditoría completa de la iteración está en `docs/auditoria-iteracion.md` y las capturas (desktop/tablet/móvil) en `docs/capturas/`.
+
 ## Cómo ejecutarla
 
 Doble clic en `index.html` — no requiere instalación ni servidor. Para probar en el celular dentro de tu red local: `python -m http.server 8080` en esta carpeta y abre `http://IP-DEL-PC:8080`.
