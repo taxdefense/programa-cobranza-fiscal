@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inscripción — Programa de Acompañamiento en Cobranza Fiscal</title>
+<meta name="description" content="Inscríbete al Programa de Acompañamiento en Cobranza Fiscal: 3 meses de curso, consultas por tickets, sesiones mensuales y comunidad." />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/estilo.css" />
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="sim-banner" role="status">CHECKOUT SIMULADO — No procesa pagos ni almacena datos. La pasarela real (Webpay u otra) se integra en la fase de desarrollo.</div>
+
+<!-- Checkout sin distracciones: header mínimo, sin navegación completa -->
+<header class="header">
+  <div class="container">
+    <a class="logo" href="index.html" aria-label="Volver al inicio">
+      <span class="logo-mark">J</span>
+      <span class="logo-text"><strong>Jurídicamente</strong><span>Defensor del Contribuyente</span></span>
+    </a>
+    <nav class="nav" aria-label="Checkout" style="position:static;opacity:1;pointer-events:auto;flex-direction:row;padding:0;background:none">
+      <a href="preguntas.html">¿Dudas? Ver preguntas</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+<section class="section" style="padding-top:56px">
+  <div class="container">
+    <span class="eyebrow" data-reveal>Inscripción</span>
+    <h1 class="display-md" data-reveal style="--d:.06s">Estás a un paso de dejar de improvisar</h1>
+    <div class="checkout-grid" style="margin-top:40px">
+
+      <!-- Formulario -->
+      <form class="card" id="checkoutForm" data-reveal novalidate>
+        <h2 class="display-sm" style="margin-bottom:6px">Tus datos</h2>
+        <p style="font-size:.9rem;color:var(--ink-soft);margin-bottom:22px">Solo pedimos lo necesario para crear tu acceso y emitir tu documento tributario.</p>
+        <div class="field">
+          <label for="i-nombre">Nombre completo</label>
+          <input id="i-nombre" name="nombre" type="text" required autocomplete="name" />
+          <span class="error">Ingresa tu nombre completo.</span>
+        </div>
+        <div class="field">
+          <label for="i-email">Correo electrónico</label>
+          <input id="i-email" name="email" type="email" required autocomplete="email" />
+          <span class="hint">Aquí llegan tus accesos: revísalo bien.</span>
+          <span class="error">Ingresa un correo válido.</span>
+        </div>
+        <div class="field">
+          <label for="i-fono">Teléfono (WhatsApp)</label>
+          <input id="i-fono" name="fono" type="tel" required autocomplete="tel" placeholder="+56 9 " />
+          <span class="hint">Para invitarte a la comunidad privada del programa.</span>
+          <span class="error">Ingresa tu teléfono.</span>
+        </div>
+        <div class="field">
+          <label for="i-doc">Documento tributario</label>
+          <select id="i-doc" name="documento" required>
+            <option value="boleta" selected>Boleta (persona natural)</option>
+            <option value="factura">Factura (empresa)</option>
+          </select>
+        </div>
+
+        <h2 class="display-sm" style="margin:28px 0 12px">Medio de pago</h2>
+        <div class="pay-methods" role="radiogroup" aria-label="Medio de pago">
+          <label><input type="radio" name="pago" value="webpay" checked /> <span>Webpay / tarjetas <small>Pasarela por integrar en desarrollo</small></span></label>
+          <label><input type="radio" name="pago" value="transferencia" /> <span>Transferencia bancaria <small>Datos se envían por correo al confirmar</small></span></label>
+        </div>
+
+        <div class="check-row">
+          <input type="checkbox" id="i-tyc" required />
+          <label for="i-tyc">Acepto los <a href="legal.html">términos y condiciones</a> y la <a href="legal.html#privacidad">política de privacidad</a>, incluida la información sobre el <a href="legal.html#retracto">derecho a retracto</a>.</label>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="i-com" />
+          <label for="i-com">Quiero recibir novedades y material educativo por correo (opcional).</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" data-evt="checkout_submit">Confirmar inscripción</button>
+        <p class="hint" style="margin-top:14px;text-align:center">Pago seguro · Sin costos ocultos · Retracto legal de 10 días</p>
+      </form>
+
+      <!-- Resumen del pedido -->
+      <aside class="order-summary" data-reveal style="--d:.08s" aria-label="Resumen de tu inscripción">
+        <h2>Tu inscripción</h2>
+        <div class="order-line"><span>Programa de Acompañamiento en Cobranza Fiscal · 3 meses</span></div>
+        <div class="order-line"><span>Curso completo (10 módulos)</span><span>Incluido</span></div>
+        <div class="order-line"><span>Consultas por tickets</span><span>Incluido</span></div>
+        <div class="order-line"><span>3 sesiones mensuales en vivo</span><span>Incluido</span></div>
+        <div class="order-line"><span>Comunidad + guías y recursos</span><span>Incluido</span></div>
+        <div class="order-line"><span>Subtotal</span><span class="nums">$249.000</span></div>
+        <div class="order-line"><span>Impuestos</span><span>Incluidos</span></div>
+        <div class="order-line total"><span>Total a pagar</span><span class="nums">$249.000</span></div>
+        <p style="font-size:.78rem;color:var(--ink-soft);margin-top:12px"><span class="badge-prov">valor provisional</span> Monto por confirmar antes del lanzamiento. Cuotas y medios de pago definitivos al integrar la pasarela.</p>
+        <p style="font-size:.82rem;color:var(--ink-soft);margin-top:14px">Inicio de cohorte: <b>11 de agosto de 2026</b> <span class="badge-prov">por confirmar</span></p>
+        <p style="font-size:.82rem;color:var(--ink-soft);margin-top:8px">¿Dudas de último minuto? <a href="contacto.html" style="color:var(--brand);font-weight:700">Contacto comercial</a></p>
+      </aside>
+
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-legal" style="padding-top:0">
+      <p>© <span data-year></span> Estudio Jurídico Boutique — Defensor del Contribuyente · <a href="legal.html" style="color:rgba(255,255,255,.7)">Términos</a> · <a href="legal.html#privacidad" style="color:rgba(255,255,255,.7)">Privacidad</a> · <a href="contacto.html" style="color:rgba(255,255,255,.7)">Soporte</a></p>
+    </div>
+  </div>
+</footer>
+<script src="assets/js/app.js"></script>
+<script>
+window.__track('checkout_start');
+document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  if (!window.__validateForm(this)) {
+    window.__track('checkout_error', { motivo: 'validacion' });
+    return;
+  }
+  window.__track('purchase_simulada', { valor: 249000, moneda: 'CLP' });
+  /* SIMULACIÓN: en producción aquí se redirige a la pasarela de pago. */
+  location.href = 'confirmacion.html';
+});
+</script>
+</body>
+</html>
