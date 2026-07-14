@@ -41,6 +41,16 @@
     });
   });
 
+  /* Videos placeholder: registra video_play y avisa que la pieza está pendiente.
+     Al integrar los videos reales, reemplazar el alert por el reproductor y
+     disparar video_complete al terminar la reproducción. */
+  document.querySelectorAll('[data-video]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      track('video_play', { video: btn.getAttribute('data-video') });
+      alert('MAQUETA: video "' + btn.getAttribute('data-video') + '" pendiente de producción. Aquí se abrirá el reproductor con subtítulos y transcripción.');
+    });
+  });
+
   /* ---------- Preservación de UTM entre páginas ---------- */
   try {
     var utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
