@@ -1,0 +1,51 @@
+{
+  "_instrucciones": "Completa cada valor marcado COMPLETAR. Lo que dejes en COMPLETAR (o en 0) se queda como placeholder y el script te lo avisa. Cuando esté listo, corre: python LANZAMIENTO/armar.py",
+
+  "marca": {
+    "razon_social": "COMPLETAR — razón social del estudio para los términos legales",
+    "rut": "COMPLETAR — RUT del estudio (ej: 76.123.456-7)",
+    "direccion": "COMPLETAR — domicilio del estudio (calle, número, Concepción)",
+    "correo_soporte": "COMPLETAR — correo de soporte/retracto (ej: soporte@juridicamente.cl)",
+    "whatsapp": "COMPLETAR — número comercial en formato 569XXXXXXXX (sin +, sin espacios)",
+    "dominio": "curso.juridicamente.cl"
+  },
+
+  "oferta": {
+    "precio_clp": 0,
+    "precio_nota": "CLP, impuestos incluidos",
+    "cuotas_texto": "COMPLETAR o deja vacío — ej: 'o en 2 cuotas de $124.500'",
+    "fecha_inicio": "COMPLETAR — ej: 11 de agosto de 2026",
+    "fecha_cierre": "COMPLETAR — ej: 8 de agosto de 2026 (o 'al completar cupos')",
+    "cupos": "COMPLETAR — ej: 30 (o deja el texto 'Cupos limitados')"
+  },
+
+  "tickets": {
+    "tiempo_respuesta": "COMPLETAR — ej: 3 días hábiles",
+    "volumen": "COMPLETAR — ej: hasta 4 consultas al mes (o 'uso razonable')"
+  },
+
+  "trayectoria": {
+    "anios": "COMPLETAR — ej: +10 (deja el signo si quieres)",
+    "defensas": "COMPLETAR — ej: +200"
+  },
+
+  "flags": {
+    "recursos_listos": false,
+    "quitar_banners_maqueta": false,
+    "quitar_badges_pendientes": false,
+    "_nota_flags": "recursos_listos quita el rótulo 'propuesta de recurso'. quitar_banners_maqueta elimina la franja amarilla superior. quitar_badges_pendientes elimina las etiquetas 'por confirmar' de los datos que YA completaste. Pon los tres en true solo para el build final de producción."
+  },
+
+  "_assets_pendientes_requieren_archivo": {
+    "_nota": "Estos NO se llenan aquí: son archivos que debes dejar en la carpeta indicada. El script solo te recuerda cuáles faltan.",
+    "foto_victor": "assets/img/victor.jpg (reemplaza el placeholder de la sección autoridad)",
+    "video_principal": "assets/video/principal.mp4 + poster.jpg (guion en docs/guiones-video.md)",
+    "video_como_funciona": "assets/video/como-funciona.mp4",
+    "video_experto": "assets/video/experto.mp4",
+    "video_demo": "assets/video/demo.mp4",
+    "video_objeciones": "assets/video/objeciones.mp4",
+    "video_testimonio": "assets/video/testimonio.mp4 (solo con consentimiento firmado)",
+    "testimonios_reales": "3 testimonios de participantes: texto + nombre/inicial + perfil + foto",
+    "og_image": "assets/img/og.jpg (1200x630, para compartir en redes)"
+  }
+}
