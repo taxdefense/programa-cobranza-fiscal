@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E9594'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-size='36' font-weight='900' fill='white' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
-<meta name="theme-color" content="#0E9594" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F758A'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-size='36' font-weight='900' fill='white' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
+<meta name="theme-color" content="#0F758A" />
 <link rel="stylesheet" href="assets/css/estilo.css" />
 </head>
 <body>
@@ -111,14 +111,36 @@
     </div>
   </div>
 </footer>
+<script src="assets/js/config.js"></script>
 <script src="assets/js/app.js"></script>
 <script>
 document.getElementById('contactForm').addEventListener('submit', function (e) {
   e.preventDefault();
-  if (!window.__validateForm(this)) return;
+  var form = this;
+  if (!window.__validateForm(form)) return;
   window.__track('form_submit', { form: 'contacto' });
-  document.getElementById('contactOk').style.display = 'block';
-  this.reset();
+  var hook = (window.SITE_CONFIG || {}).FORM_WEBHOOK_URL;
+  var ok = document.getElementById('contactOk');
+  if (hook) {
+    /* Envío real al webhook configurado (n8n / Formspree / Make). */
+    fetch(hook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: form.nombre.value, email: form.email.value,
+        mensaje: form.mensaje.value, origen: 'contacto-programa'
+      })
+    }).then(function () {
+      ok.textContent = '✓ Consulta enviada. Te responderemos en horario hábil.';
+      ok.style.display = 'block'; form.reset();
+    }).catch(function () {
+      ok.textContent = 'No pudimos enviar tu consulta. Escríbenos por WhatsApp.';
+      ok.style.display = 'block';
+    });
+  } else {
+    ok.style.display = 'block';
+    form.reset();
+  }
 });
 </script>
 </body>

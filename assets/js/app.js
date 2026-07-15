@@ -6,6 +6,77 @@
 (function () {
   'use strict';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var CFG = window.SITE_CONFIG || {};
+
+  /* ================================================================
+     INTEGRACIONES ENCHUFABLES (se activan al llenar assets/js/config.js)
+     ================================================================ */
+
+  /* Consentimiento de cookies: los trackers (GTM / Meta Pixel) solo se
+     cargan si el visitante acepta. Cumple estándar de protección de datos. */
+  function cargarTrackers() {
+    if (CFG.GTM_ID) {
+      var g = document.createElement('script');
+      g.async = true;
+      g.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(CFG.GTM_ID);
+      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      document.head.appendChild(g);
+    }
+    if (CFG.META_PIXEL_ID) {
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('init', CFG.META_PIXEL_ID);
+      window.fbq('track', 'PageView');
+    }
+  }
+
+  var hayTrackers = !!(CFG.GTM_ID || CFG.META_PIXEL_ID);
+  var consent = null;
+  try { consent = localStorage.getItem('cookie-consent'); } catch (e) {}
+  if (hayTrackers && consent === 'ok') cargarTrackers();
+  if (hayTrackers && !consent) {
+    document.addEventListener('DOMContentLoaded', function () {
+      var bar = document.createElement('div');
+      bar.className = 'cookie-bar visible';
+      bar.setAttribute('role', 'dialog');
+      bar.setAttribute('aria-label', 'Consentimiento de cookies');
+      bar.innerHTML = '<span>Usamos cookies de medición para mejorar el sitio y nuestras campañas. ' +
+        '<a href="legal.html#cookies">Más información</a></span>' +
+        '<button class="ck-ok" type="button">Aceptar</button>' +
+        '<button class="ck-no" type="button">Rechazar</button>';
+      document.body.appendChild(bar);
+      bar.querySelector('.ck-ok').addEventListener('click', function () {
+        try { localStorage.setItem('cookie-consent', 'ok'); } catch (e) {}
+        bar.remove(); cargarTrackers();
+      });
+      bar.querySelector('.ck-no').addEventListener('click', function () {
+        try { localStorage.setItem('cookie-consent', 'no'); } catch (e) {}
+        bar.remove();
+      });
+    });
+  }
+
+  /* Chat conversacional con IA: se inyecta el widget configurado. */
+  if (CFG.CHAT_WIDGET_SRC) {
+    var chat = document.createElement('script');
+    chat.async = true;
+    chat.src = CFG.CHAT_WIDGET_SRC;
+    document.head.appendChild(chat);
+  }
+
+  /* Botones de portal de tickets (Jira Service Management). */
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-jira-portal]').forEach(function (el) {
+      if (CFG.JIRA_PORTAL_URL) {
+        el.setAttribute('href', CFG.JIRA_PORTAL_URL);
+        el.setAttribute('target', '_blank');
+        el.setAttribute('rel', 'noopener');
+      }
+    });
+  });
 
   /* ---------- Analítica simulada ---------- */
   window.dataLayer = window.dataLayer || [];
