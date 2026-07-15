@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f758a'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-size='36' font-weight='900' fill='white' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
-<meta name="theme-color" content="#0f758a" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E9594'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-size='36' font-weight='900' fill='white' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
+<meta name="theme-color" content="#0E9594" />
 <link rel="stylesheet" href="assets/css/estilo.css" />
 </head>
 <body>
@@ -74,7 +74,7 @@
 
         <div class="check-row">
           <input type="checkbox" id="i-tyc" required />
-          <label for="i-tyc">Acepto los <a href="legal.html">términos y condiciones</a> y la <a href="legal.html#privacidad">política de privacidad</a>, incluida la información sobre el <a href="legal.html#retracto">derecho a retracto</a>.</label>
+          <label for="i-tyc">Acepto los <a href="legal.html">términos y condiciones</a> y la <a href="legal.html#privacidad">política de privacidad</a>, incluida la <a href="legal.html#garantia">garantía incondicional de 10 días</a>.</label>
         </div>
         <div class="check-row">
           <input type="checkbox" id="i-com" />
@@ -82,22 +82,22 @@
         </div>
 
         <button type="submit" class="btn btn-primary btn-block" data-evt="checkout_submit">Confirmar inscripción</button>
-        <p class="hint" style="margin-top:14px;text-align:center">Pago seguro · Sin costos ocultos · Retracto legal de 10 días</p>
+        <p class="hint" style="margin-top:14px;text-align:center">Pago seguro · Sin costos ocultos · Garantía incondicional de 10 días</p>
       </form>
 
       <!-- Resumen del pedido -->
       <aside class="order-summary" data-reveal style="--d:.08s" aria-label="Resumen de tu inscripción">
         <h2>Tu inscripción</h2>
         <div class="order-line"><span>Programa de Acompañamiento en Cobranza Fiscal · 3 meses</span></div>
-        <div class="order-line"><span>Curso completo (10 módulos)</span><span>Incluido</span></div>
+        <div class="order-line"><span>Master Class (10 módulos + grabaciones)</span><span>Incluido</span></div>
         <div class="order-line"><span>Consultas por tickets</span><span>Incluido</span></div>
         <div class="order-line"><span>3 sesiones mensuales en vivo</span><span>Incluido</span></div>
         <div class="order-line"><span>Comunidad + guías y recursos</span><span>Incluido</span></div>
-        <div class="order-line"><span>Subtotal</span><span class="nums">$249.000</span></div>
+        <div class="order-line"><span>Subtotal</span><span class="nums">$349.000</span></div>
         <div class="order-line"><span>Impuestos</span><span>Incluidos</span></div>
-        <div class="order-line total"><span>Total a pagar</span><span class="nums">$249.000</span></div>
-        <p style="font-size:.78rem;color:var(--ink-soft);margin-top:12px"><span class="badge-prov">valor provisional</span> Monto por confirmar antes del lanzamiento. Cuotas y medios de pago definitivos al integrar la pasarela.</p>
-        <p style="font-size:.82rem;color:var(--ink-soft);margin-top:14px">Inicio de cohorte: <b>11 de agosto de 2026</b> <span class="badge-prov">por confirmar</span></p>
+        <div class="order-line total"><span>Total a pagar</span><span class="nums">$349.000</span></div>
+        <p style="font-size:.78rem;color:var(--ink-soft);margin-top:12px">Limitado a 1 RUT / tipo de caso · Cuotas y medios de pago definitivos al integrar la pasarela.</p>
+        <p style="font-size:.82rem;color:var(--ink-soft);margin-top:14px"><b>Acceso inmediato:</b> tus 3 meses parten el día que entras.</p>
         <p style="font-size:.82rem;color:var(--ink-soft);margin-top:8px">¿Dudas de último minuto? <a href="contacto.html" style="color:var(--brand);font-weight:700">Contacto comercial</a></p>
       </aside>
 
@@ -109,7 +109,7 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-legal" style="padding-top:0">
-      <p>© <span data-year></span> Estudio Jurídico Boutique — Defensor del Contribuyente · <a href="legal.html" style="color:rgba(255,255,255,.7)">Términos</a> · <a href="legal.html#privacidad" style="color:rgba(255,255,255,.7)">Privacidad</a> · <a href="contacto.html" style="color:rgba(255,255,255,.7)">Soporte</a></p>
+      <p>© <span data-year></span> Grupo Alcázar Limitada · Defensor del Contribuyente · <a href="legal.html" style="color:rgba(255,255,255,.7)">Términos</a> · <a href="legal.html#privacidad" style="color:rgba(255,255,255,.7)">Privacidad</a> · <a href="contacto.html" style="color:rgba(255,255,255,.7)">Soporte</a></p>
     </div>
   </div>
 </footer>
@@ -122,7 +122,7 @@ document.getElementById('checkoutForm').addEventListener('submit', function (e) 
     window.__track('checkout_error', { motivo: 'validacion' });
     return;
   }
-  window.__track('purchase', { valor: 249000, moneda: 'CLP', simulado: true });
+  window.__track('purchase', { valor: 349000, moneda: 'CLP', simulado: true });
   /* SIMULACIÓN: en producción aquí se redirige a la pasarela de pago. */
   location.href = 'confirmacion.html';
 });

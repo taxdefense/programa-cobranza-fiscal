@@ -22,25 +22,24 @@ Voz: "el abogado más inteligente que conoces te explica el sistema como si te d
 
 ---
 
-## VIDEO 1 — Principal (90 s) · "El programa explicado en 90 segundos"
+## VIDEO 1 — Principal (60 s) · "Nuestro compromiso y experiencia en 60 segundos"
 
 - **Ubicación web:** landing, después de la sección Problema.
-- **Objetivo:** que en 90 s se entienda el problema, la solución y qué incluye — en la voz del responsable.
+- **Objetivo:** el problema, la solución y el compromiso — en la voz de LOS DOS profesionales que acompañan (Víctor + Álvaro). El dúo ES el mensaje: visión sistémica + músculo litigante.
 - **Segmento:** transversal, con foco en Perfil 1 (Deudor Reactivo) y Perfil 4 (Emprendedor Preventivo).
-- **Set:** oficina real del estudio, luz natural + relleno suave. Víctor a cámara, plano medio.
+- **Set:** oficina real del estudio, luz natural + relleno suave. Ambos a cámara, plano medio conjunto; cortes a plano individual por línea.
 
 | t (s) | STOP | PLANO / PANTALLA | LOCUCIÓN |
 |---|---|---|---|
-| 0–5 | **S** | [PLANO: medio corto, Víctor mira a cámara] · [PANTALLA: sobre negro, aparece "Llegó la carta."] | "Llegó la carta de la Tesorería. Y de repente tienes un problema que no sabes ni cómo se llama." |
-| 5–15 | **T** | [B-ROLL: sobre de carta, un dedo pasando un certificado de deuda] · [PANTALLA: "¿Es grave? ¿Cuánto plazo tengo? ¿Quién me cobra?"] | "El SII, la Tesorería, los diez días, el embargo… nadie te enseñó esto. Y decidir a ciegas, frente al Fisco, sale caro." |
-| 15–30 | **T** | [PLANO: Víctor, plano medio] · [PANTALLA lower-third: "Programa de Acompañamiento en Cobranza Fiscal · 3 meses"] | "Por eso creamos esto: no un curso que ves y abandonas, sino un acompañamiento de tres meses para que entiendas el proceso completo y dejes de improvisar." |
-| 30–55 | **T** | [PANTALLA: 5 íconos que entran uno a uno] Curso · Consultas por tickets · Sesiones en vivo · Comunidad · Guías | "Tienes el curso, en cápsulas, a tu ritmo. Consultas personalizadas por un sistema de tickets, con respuesta y con historial. Una sesión en vivo cada mes. Una comunidad. Y guías para ordenar tu situación." |
-| 55–70 | **T** | [PLANO: Víctor, un poco más cerca] · [PANTALLA: "Lo que NO es" en teal] | "¿Qué no es? No es patrocinio judicial, no hacemos los trámites por ti, y no te prometemos un resultado. Te damos algo más útil: entender, para decidir bien." |
-| 70–85 | **O** | [PLANO: Víctor] · [B-ROLL: alguien viendo una cápsula en el celular, tranquilo] | "Si tienes una deuda y hoy la enfrentas solo, esto se hizo para ti." |
-| 85–90 | **P** | [PANTALLA: CTA "Revisa el temario y decide informado" + logo] | "Revisa el temario. Y decide con información, como todo lo que hacemos acá." |
+| 0–6 | **S** | [PLANO: Víctor, medio corto] · [PANTALLA: "Llegó la carta."] | VÍCTOR: "Llegó la carta de Tesorería. Y de repente tienes un problema que no sabes ni cómo se llama." |
+| 6–14 | **T** | [PLANO: Álvaro] · [PANTALLA: "¿Es grave? ¿Cuánto plazo tengo?"] | ÁLVARO: "El SII, la TGR, los diez días, el embargo… nadie te enseñó esto. Y decidir a ciegas frente al Fisco sale caro." |
+| 14–28 | **T** | [PLANO: ambos] · [PANTALLA lower-third: "Programa 360 · 3 meses"] | VÍCTOR: "Por eso creamos este programa: Master Class simple y aplicable, consultas personalizadas por tickets, sesiones en vivo y comunidad. Tres meses acompañado." |
+| 28–40 | **T** | [PLANO: Álvaro, más cerca] · [PANTALLA: "Lo que NO es"] | ÁLVARO: "¿Qué no es? No es patrocinio judicial y no te prometemos resultados. Te damos algo más útil: entender tu caso para decidir bien." |
+| 40–52 | **O** | [PLANO: Víctor] · [PANTALLA: "+10 años · +400 sentencias · +300 clientes"] | VÍCTOR: "Llevamos más de diez años defendiendo contribuyentes. Esa práctica real es la que ponemos a tu servicio." |
+| 52–60 | **P** | [PLANO: ambos] · [PANTALLA: CTA "Quiero entrar" + "Garantía incondicional de 10 días"] | ÁLVARO: "Entra, pruébalo 10 días con garantía…" VÍCTOR: "…y decide informado. Como todo lo que hacemos acá." |
 
-- **Transcripción/CTA cierre:** botón inferior "Quiero inscribirme".
-- **Nota de rodaje:** grabar la línea 55–70 (los "no") mirando fijo a cámara — es el momento de credibilidad, no acelerar.
+- **Transcripción/CTA cierre:** botón inferior "Quiero entrar".
+- **Nota de rodaje:** el cierre a dos voces se graba junto — es el sello del dúo. Los "no" de Álvaro, mirando fijo a cámara, sin acelerar.
 
 ---
 
