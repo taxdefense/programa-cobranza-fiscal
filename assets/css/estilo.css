@@ -545,6 +545,12 @@ table.channels tr:last-child td { border-bottom: 0; }
   padding: 5px 12px; border-radius: 999px;
 }
 
+/* ---------- Imagen del hero (transitoria → sesión fotográfica) ---------- */
+.hero-visual { aspect-ratio: 4/4.6; max-height: 520px; box-shadow: var(--shadow-card-hover); }
+
+/* ---------- Card "Lo que GANAS" como sección propia ---------- */
+.ganas-card { max-width: 680px; margin: 0 auto; }
+
 /* ---------- Problema con imagen ---------- */
 .problema-head { display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; margin-bottom: 44px; }
 .problema-head .stock-slot { aspect-ratio: 4/3; }

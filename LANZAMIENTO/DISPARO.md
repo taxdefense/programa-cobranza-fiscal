@@ -1,6 +1,6 @@
 # 🎯 Playbook de disparo — Sitio Programa de Cobranza Fiscal
 
-Todo listo para el día del lanzamiento. Cuando tengas los datos, esto se dispara en 3 pasos.
+> **ACTUALIZADO 15-07-2026:** los datos comerciales (precio $349.000, garantía 10 días, WhatsApp, Grupo Alcázar, cifras) **ya están integrados** y el sitio ya está publicado en GitHub Pages. La guía vigente de lo que falta es el PDF `Downloads/DDC-Documentos/guia-propagacion-programa-2026-07-15.pdf`. Las tablas de datos de abajo quedaron obsoletas; este playbook sirve para el build final (flags de armar.py) y como referencia del método de publicación.
 
 ---
 
@@ -23,7 +23,7 @@ Los 8 datos de **texto** (van en `datos-lanzamiento.json`):
 Los **assets** (archivos, no texto — el script te los recuerda):
 
 - Foto real de Víctor/equipo → `assets/img/victor.jpg`
-- Los 6 videos (guiones en [`docs/guiones-video.md`](../docs/guiones-video.md))
+- Los 6 videos (guiones en [`docs/guiones/guiones-video.md`](../docs/guiones/guiones-video.md))
 - 3 testimonios reales de participantes (texto + foto + consentimiento)
 - Imagen para compartir en redes → `assets/img/og.jpg` (1200×630)
 
