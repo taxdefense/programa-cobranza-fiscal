@@ -1,0 +1,361 @@
+<!-- @dsCard group="Landing" viewport="1280x900" name="Landing page — acompañamiento premium" subtitle="Institutional, airy redesign (Mighty Networks-inspired), not an infoproduct" -->
+<!doctype html><html><head><meta charset="utf-8"><title>Programa Cobranza Fiscal — Acompañamiento</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+.wrap-narrow{max-width:760px;margin:0 auto;padding:0 32px}
+.section{padding:120px 0}
+@media (max-width:900px){.section{padding:72px 0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+[data-reveal]{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) both}
+@media (prefers-reduced-motion:reduce){[data-reveal]{animation:none}}
+.hover-lift{transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s cubic-bezier(.16,1,.3,1)}
+.hover-lift:hover{transform:translateY(-3px)}
+</style>
+<template id="__bundler_thumbnail" data-bg-color="#C1613F"><svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#C1613F"/><text x="600" y="430" font-family="Arial,sans-serif" font-size="180" font-weight="900" fill="#fff" text-anchor="middle">J</text></svg></template>
+<!-- HANDOFF NOTES (Claude Code) — leer antes de tocar nada:
+1. NO reestructurar componentes, layout ni el bundle del design system (../../_ds_bundle.js, ../../styles.css). Todo el estilo viene de tokens CSS; no hardcodear colores nuevos.
+2. Pago: <form id="enrollment-form" data-payment-provider="flow"> en #inscripcion, botón id="flow-checkout-btn". Conectar onSubmit a la API de Flow (crear orden, redirigir a payment_url). No cambiar el markup del formulario, solo agregar el handler.
+3. Portal alumno: enlace "Intranet" en el header (INTRANET_HREF) y accesos del footer deben apuntar al login real del portal de tickets (Freshdesk o frontend propio con SSO a Freshdesk).
+4. Backend sugerido: Freshdesk como tiquetera con portal de cliente; Pipedrive se mantiene para tramitación legal (casos que escalan a defensa); conector nativo Freshdesk<->Pipedrive para handoff automático de casos.
+5. Placeholders <image-slot> (fotos y videos) se reemplazan por los assets reales del cliente — no generar contenido nuevo ahí.
+6. Ejecutar SOLO cambios robustos y aislados (integraciones, wiring de formularios/links). Cualquier cambio visual o de copy debe volver al diseño para aprobación.
+-->
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { Header, Footer, Eyebrow, Card, AccordionItem, Chip, FormField, CheckRow, Button, Notice } = window.JurDicamenteDesignSystem_8b9504;
+
+const NAV = [
+  {href:'#programa', label:'El programa'},
+  {href:'#como-funciona', label:'Cómo funciona'},
+  {href:'#modulos', label:'Contenidos'},
+  {href:'#faq', label:'Preguntas'},
+];
+/* TODO(Víctor): INTRANET_HREF debe apuntar al portal real de alumno. Backend sugerido: portal de
+   clientes de Freshdesk — el patrón de login es https://<tu-subdominio>.freshdesk.com/support/login.
+   Reemplazar por el subdominio real de Freshdesk una vez esté contratado/activado. */
+const INTRANET_HREF = 'https://intranet.juridicamente.cl/alumno';
+const PROGRAM_LINKS = [{href:'#modulos',label:'Contenidos'},{href:'#como-funciona',label:'Cómo funciona'},{href:'#faq',label:'Preguntas frecuentes'},{href:'#inscripcion',label:'Inscripción'},{href:INTRANET_HREF,label:'Intranet'}];
+const LEGAL_LINKS = [{href:'#legal-terminos',label:'Términos y condiciones'},{href:'#legal-privacidad',label:'Política de privacidad'},{href:'#legal-contacto',label:'Contacto comercial'}];
+
+/* Wiring (Claude Code): crea la orden de pago en el backend (nunca en el navegador, ya que
+   requiere la API key secreta de Flow) y redirige a la payment_url que retorna Flow. */
+async function handleEnrollmentSubmit(e){
+  e.preventDefault();
+  const form = e.currentTarget;
+  const btn = document.getElementById('flow-checkout-btn');
+  const nombre = form.nombre.value.trim();
+  const email = form.email.value.trim();
+  const telefono = form.telefono.value.trim();
+  if(!nombre || !email || !form.acepta.checked) return;
+  const original = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Redirigiendo a pago…';
+  try{
+    const r = await fetch('/api/flow/create-payment', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({nombre, email, telefono}),
+    });
+    const data = await r.json();
+    if(!r.ok || !data.url) throw new Error(data && data.error || 'flow_error');
+    window.location.href = data.url;
+  }catch(err){
+    btn.disabled = false; btn.textContent = original;
+    alert('No pudimos iniciar el pago. Intenta nuevamente o escríbenos por WhatsApp.');
+  }
+}
+
+function Hero(){
+  return (<header style={{padding:'64px 0 0'}}>
+    <div className="wrap" style={{display:'grid',gridTemplateColumns:'1.15fr .85fr',gap:64,alignItems:'center'}}>
+      <div data-reveal>
+        <Eyebrow>Programa de acompañamiento en cobranza fiscal</Eyebrow>
+        <h1 style={{fontSize:'clamp(2.4rem,1.6rem + 3.2vw,4rem)',lineHeight:1.06,letterSpacing:'-0.02em',margin:'0 0 22px',maxWidth:640}}>Deja de enfrentar tu deuda fiscal <span style={{color:'var(--brand)'}}>a ciegas.</span></h1>
+        <p style={{fontSize:'1.2rem',color:'var(--ink-soft)',lineHeight:1.6,maxWidth:480,marginBottom:28}}>No necesitas saber Derecho Tributario para empezar. Solo comprender qué está ocurriendo, ordenar tus antecedentes y aprender a decidir con información.</p>
+        <Button variant="primary" href="#inscripcion">Quiero entrar</Button>
+        <p style={{fontSize:'.85rem',color:'var(--ink-soft)',marginTop:18}}>Acceso inmediato · Acompañamiento por 3 meses · Garantía de 10 días</p>
+      </div>
+      <div data-reveal style={{position:'relative'}}>
+        <image-slot id="hero-photo" shape="rounded" radius="24" placeholder="Foto real: persona revisando documentos con calma, en un espacio cotidiano y luminoso" style={{width:'100%',aspectRatio:'4/4.6',display:'block'}}></image-slot>
+        <div className="hover-lift" style={{position:'absolute',left:-28,bottom:-28,background:'#fff',borderRadius:20,boxShadow:'var(--shadow-card-hover)',padding:'26px 28px',maxWidth:280}}>
+          <div style={{fontSize:'.72rem',fontWeight:800,textTransform:'uppercase',letterSpacing:'.1em',color:'var(--brand)',marginBottom:10}}>Tu próximo paso</div>
+          <p style={{fontSize:'.94rem',color:'var(--ink-soft)',lineHeight:1.55,margin:0}}>Entender tu situación es el primer paso para dejar de sentirte perdido frente al SII y la Tesorería.</p>
+        </div>
+      </div>
+    </div>
+  </header>);
+}
+
+function MomentoQueCambia(){
+  return (<section className="section wrap-narrow" style={{padding:'88px 0'}} data-reveal>
+    <Eyebrow>El momento que cambia todo</Eyebrow>
+    <h2 style={{fontSize:'2.1rem',marginBottom:20,lineHeight:1.15}}>Llegó una carta de Tesorería. ¿Y ahora qué?</h2>
+    <p style={{fontSize:'1.05rem',color:'var(--ink-soft)',lineHeight:1.7,marginBottom:22}}>No es extraño sentir miedo, confusión o incluso vergüenza. Nadie te enseñó cómo funciona una cobranza fiscal ni qué decisiones conviene evaluar.</p>
+    <p style={{borderLeft:'3px solid var(--brand)',paddingLeft:16,fontWeight:700,color:'var(--ink)',lineHeight:1.5,fontSize:'1.1rem'}}>Tu deuda no define quién eres. Lo importante es entender tu situación antes de actuar.</p>
+  </section>);
+}
+
+function Problema(){
+  const items=[
+    ['¿Qué significa esta notificación?','Todavía no sé si debo preocuparme, y por cuánto tiempo.'],
+    ['No sé de dónde salió esta deuda.','Pensé que todo estaba en orden hasta que empezaron a cobrarme.'],
+    ['¿Qué hago con mi deuda CAE?','Siento que me juzgan por no poder pagar, o por querer pagar solo lo justo.'],
+    ['¿Quién me está cobrando, en realidad?','SII, TGR... siento que me mandan de un lugar a otro sin respuestas.'],
+    ['Cada persona me dice algo distinto.','El contador una cosa, un conocido otra. Ya no sé en quién confiar.'],
+    ['Llevo meses postergando esto.','Tengo miedo de hacer algo y empeorar la situación.'],
+  ];
+  return (<section className="section wrap" data-reveal>
+    <div style={{textAlign:'center',marginBottom:48}}><Eyebrow>Quizás esto también te pasa</Eyebrow><h2 style={{fontSize:'2rem',maxWidth:700,margin:'0 auto'}}>Las dudas cambian. La sensación de estar perdido es la misma.</h2></div>
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:44}}>
+      {items.map(([t,p],i)=>(<div key={i} style={{position:'relative',padding:'26px 24px 22px',overflow:'hidden'}}>
+        <span style={{position:'absolute',top:10,left:16,fontSize:'2.6rem',fontWeight:900,color:'var(--brand)',opacity:.35,lineHeight:1,fontFamily:'Georgia,serif'}}>&ldquo;</span>
+        <b style={{display:'block',marginBottom:6,marginTop:14,fontSize:'1.02rem',position:'relative'}}>{t}</b><span style={{color:'var(--ink-soft)',fontSize:'.94rem',lineHeight:1.55,position:'relative'}}>{p}</span>
+      </div>))}
+    </div>
+    <div style={{background:'var(--brand-tint)',borderRadius:'var(--radius-soft)',padding:'32px 40px',textAlign:'center',maxWidth:680,margin:'0 auto'}}>
+      <p style={{fontSize:'1.15rem',fontWeight:800,color:'var(--brand-dark)',lineHeight:1.5,margin:0}}>Ya no estás solo. Llegaste al lugar donde tu situación empieza a tener sentido.</p>
+    </div>
+  </section>);
+}
+
+function ExisteUnCamino(){
+  return (<section id="programa" className="section wrap-narrow" style={{textAlign:'center',padding:'88px 0'}} data-reveal>
+    <Eyebrow>Existe un camino</Eyebrow>
+    <h2 style={{fontSize:'2.2rem',marginBottom:20}}>Un acompañamiento, no una promesa de resultado.</h2>
+    <p style={{fontSize:'1.1rem',color:'var(--ink-soft)',lineHeight:1.65,maxWidth:600,margin:'0 auto 32px'}}>Tres meses para aprender a leer tu situación, recibir orientación experta sobre tu caso y decidir con información.</p>
+    <div style={{display:'flex',gap:32,justifyContent:'center',flexWrap:'wrap'}}>
+      {[['3 meses','de duración'],['Inmediato','de acceso'],['Por tickets','de acompañamiento']].map(([v,l],i)=>(
+        <div key={i} style={{textAlign:'center'}}><b style={{display:'block',fontSize:'1.15rem',color:'var(--brand)'}}>{v}</b><span style={{fontSize:'.85rem',color:'var(--ink-soft)'}}>{l}</span></div>
+      ))}
+    </div>
+  </section>);
+}
+
+function QuienesSomos(){
+  return (<section className="section wrap" style={{display:'grid',gridTemplateColumns:'.9fr 1.1fr',gap:64,alignItems:'center'}} data-reveal>
+    <div style={{position:'relative',borderRadius:24,overflow:'hidden'}}><image-slot id="estudio-video" shape="rounded" radius="24" placeholder="Video real del equipo o del estudio (60 seg) — cercano, sin poses" style={{width:'100%',aspectRatio:'4/4.4',display:'block'}}></image-slot><div style={{position:'absolute',inset:0,display:'grid',placeItems:'center',pointerEvents:'none'}}><div style={{width:64,height:64,borderRadius:'50%',background:'rgba(255,255,255,.92)',boxShadow:'var(--shadow-card-hover)',display:'grid',placeItems:'center'}}><div style={{width:0,height:0,borderTop:'11px solid transparent',borderBottom:'11px solid transparent',borderLeft:'18px solid var(--brand)',marginLeft:4}}></div></div></div></div>
+    <div>
+      <Eyebrow>Quiénes somos</Eyebrow>
+      <h2 style={{fontSize:'2rem',marginBottom:20}}>Un estudio jurídico boutique, no una academia.</h2>
+      <p style={{fontSize:'1.05rem',color:'var(--ink-soft)',lineHeight:1.7,marginBottom:16}}>Hace años decidimos estudiar el sistema de cobranza fiscal a fondo. Hoy queremos enseñártelo — con el mismo criterio con el que llevamos casos reales de personas y empresas.</p>
+      <p style={{fontSize:'1.05rem',color:'var(--ink-soft)',lineHeight:1.7}}>No buscamos convertirte en abogado. Buscamos darte lenguaje, criterio y compañía para que participes activamente en la solución.</p>
+    </div>
+  </section>);
+}
+
+function ComoFunciona(){
+  const steps=[['1','Ganas formación','Aprendes lo esencial para entender tu situación, sin tecnicismos.'],['2','Recibes orientación','Análisis humano y razonado, con próximos pasos concretos.'],['3','Decides con claridad','Sabes cuándo puedes avanzar solo y cuándo necesitas defensa.']];
+  return (<section id="como-funciona" className="section wrap" data-reveal>
+    <div style={{textAlign:'center',marginBottom:64}}><Eyebrow>Cómo funciona</Eyebrow><h2 style={{fontSize:'2.1rem'}}>Tres pasos, sin letra chica.</h2></div>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:40,marginBottom:56}}>
+      {steps.map(([n,t,p],i)=>(<div key={i} style={{textAlign:'center'}}>
+        <div style={{width:64,height:64,margin:'0 auto 20px',borderRadius:'50%',background:'var(--brand-tint)',color:'var(--brand)',fontWeight:900,fontSize:'1.3rem',display:'grid',placeItems:'center'}}>{n}</div>
+        <h3 style={{fontSize:'1.2rem',marginBottom:10}}>{t}</h3>
+        <p style={{color:'var(--ink-soft)',fontSize:'.98rem',lineHeight:1.6,maxWidth:280,margin:'0 auto'}}>{p}</p>
+      </div>))}
+    </div>
+    <Notice style={{textAlign:'center',fontSize:'1rem',padding:'22px 32px'}}>3 pilares que trabajan juntos para que pases de la confusión a la acción.</Notice>
+    <div style={{marginTop:56,maxWidth:760,marginLeft:'auto',marginRight:'auto'}}>
+      <p style={{textAlign:'center',fontSize:'.85rem',fontWeight:800,color:'var(--brand)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:16}}>Míralo en 90 segundos</p>
+      <div style={{position:'relative',borderRadius:'var(--radius-card)',overflow:'hidden',boxShadow:'var(--shadow-card)'}}>
+        <image-slot id="como-funciona-video" shape="rect" placeholder="Video real: de tu ticket a una respuesta clara — recórrelo en 90 segundos" style={{width:'100%',aspectRatio:'16/9',display:'block'}}></image-slot>
+        <div style={{position:'absolute',inset:0,display:'grid',placeItems:'center',pointerEvents:'none'}}>
+          <div style={{width:64,height:64,borderRadius:'50%',background:'rgba(255,255,255,.92)',boxShadow:'var(--shadow-card-hover)',display:'grid',placeItems:'center'}}>
+            <div style={{width:0,height:0,borderTop:'11px solid transparent',borderBottom:'11px solid transparent',borderLeft:'18px solid var(--brand)',marginLeft:4}}></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>);
+}
+
+function Deudas(){
+  const chips=['IVA, renta y PPM','Contribuciones','Giros del SII','Multas administrativas','Crédito CAE','Crédito solidario','Patentes mineras','Derechos de agua'];
+  return (<section className="section wrap-narrow" style={{textAlign:'center',padding:'88px 0'}} data-reveal>
+    <Eyebrow>Una misma lógica de cobro</Eyebrow>
+    <h2 style={{fontSize:'2rem',marginBottom:32}}>Tu deuda puede ser distinta. El sistema que la cobra suele ser el mismo.</h2>
+    <div style={{display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center',marginBottom:28}}>{chips.map((c)=><Chip key={c}>{c}</Chip>)}</div>
+  </section>);
+}
+
+function Modulos(){
+  const modulos=[
+    ['MÓDULO 1','SII y TGR: quién es quién','Comprende quién determina y quién cobra, para leer mejor tu situación.'],
+    ['MÓDULO 2','Cómo se origina una deuda fiscal','Entiende el camino que sigue una obligación hasta convertirse en cobranza.'],
+    ['MÓDULO 3','Tus derechos frente al SII y la TGR','Conoce qué puedes exigir y qué límites tiene la administración.'],
+    ['MÓDULO 4','La notificación y el mito de los "10 días"','Entiende cómo empieza el proceso y qué significa cada plazo.'],
+    ['MÓDULO 5','Embargos y medidas de apremio','Qué puede pasar con tus bienes y cómo anticiparte.'],
+    ['MÓDULO 6','Perdonazos tributarios: cuándo sí y cuándo no','Identifica cuándo son beneficios reales para tu caso y cuándo no mueven la aguja en tu problema.'],
+    ['MÓDULO 7','Convenios de pago paso a paso','Cómo se negocian y qué revisar antes de firmar.'],
+    ['MÓDULO 8','Prescripción de deudas fiscales','Cuándo una deuda puede extinguirse por el paso del tiempo.'],
+    ['MÓDULO 9','Cuándo necesitas representación legal','Señales de que tu caso ya requiere un abogado, no solo orientación.'],
+    ['MÓDULO 10','Decide tu próxima jugada','Integra lo aprendido para decidir tu próximo paso.'],
+  ];
+  return (<section id="modulos" className="section wrap-narrow" data-reveal>
+    <div style={{textAlign:'center',marginBottom:48}}><Eyebrow>Contenido práctico</Eyebrow><h2 style={{fontSize:'2.1rem',marginBottom:12}}>10 módulos breves, a tu ritmo.</h2><p style={{color:'var(--ink-soft)'}}>Ábrelos solo cuando quieras profundizar.</p></div>
+    {modulos.map(([tag,s,body],i)=>(<AccordionItem key={i} tag={tag} summary={s} defaultOpen={i===0}><p>{body}</p></AccordionItem>))}
+  </section>);
+}
+
+function Beneficios(){
+  const no=['Un chat instantáneo disponible 24/7.','Una promesa de resultado o de "solución garantizada".','Clases genéricas sin relación con tu caso.'];
+  const si=['Consultas revisadas por el equipo profesional del estudio.','Orientación honesta, incluyendo cuándo necesitas algo más que este programa.','Un historial trazable de todo tu proceso.'];
+  return (<section className="section wrap" data-reveal>
+    <div style={{textAlign:'center',marginBottom:56}}><Eyebrow>Límites claros desde el principio</Eyebrow><h2 style={{fontSize:'2.1rem'}}>No es un curso grabado. Es un proceso completo.</h2></div>
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:32}}>
+      <Card padding={32}>
+        <h3 style={{fontSize:'1rem',fontWeight:800,color:'var(--ink-soft)',marginBottom:18}}>Esto no es</h3>
+        <div style={{display:'grid',gap:14}}>{no.map((t,i)=>(<div key={i} style={{display:'flex',gap:10,fontSize:'.98rem',color:'var(--ink-soft)'}}><span style={{color:'var(--ink-soft)'}}>✕</span>{t}</div>))}</div>
+      </Card>
+      <Card padding={32} tint>
+        <h3 style={{fontSize:'1rem',fontWeight:800,color:'var(--brand-dark)',marginBottom:18}}>Esto sí es</h3>
+        <div style={{display:'grid',gap:14}}>{si.map((t,i)=>(<div key={i} style={{display:'flex',gap:10,fontSize:'.98rem',color:'var(--ink)'}}><span style={{color:'var(--brand)',fontWeight:900}}>✓</span>{t}</div>))}</div>
+      </Card>
+    </div>
+    <Notice style={{textAlign:'center',fontSize:'1rem',padding:'22px 32px',marginTop:32}}>Consulta mediante tickets. No incluye representación administrativa ni judicial. Revisa los <a href="#legal-terminos">términos y condiciones</a>.</Notice>
+  </section>);
+}
+
+function CountStat({ to, suffix = '', label, prefix = '+' }) {
+  const ref = React.useRef(null);
+  const [n, setN] = React.useState(0);
+  React.useEffect(() => {
+    const el = ref.current;
+    let done = false;
+    const animate = () => {
+      if (done) return;
+      done = true;
+      const start = performance.now(), dur = 1400;
+      const tick = (now) => {
+        const p = Math.min(1, (now - start) / dur);
+        setN(Math.round((1 - Math.pow(1 - p, 3)) * to));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const r = el && el.getBoundingClientRect();
+    if (r && r.top < window.innerHeight && r.bottom > 0) { animate(); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { animate(); io.disconnect(); } });
+    }, { threshold: 0.05 });
+    if (el) io.observe(el);
+    return () => io.disconnect();
+  }, [to]);
+  return (<div ref={ref} style={{ borderLeft: '3px solid var(--brand-soft)', paddingLeft: 16 }}>
+    <b style={{ display: 'block', fontSize: '1.9rem', fontWeight: 900, color: 'var(--brand)' }}>{prefix}{n}{suffix}</b>
+    <span style={{ fontSize: '.85rem', color: 'var(--ink-soft)' }}>{label}</span>
+  </div>);
+}
+
+function Proof(){
+  return (<section className="section wrap-narrow" style={{textAlign:'center'}} data-reveal>
+    <Eyebrow>Experiencia convertida en aprendizaje</Eyebrow>
+    <h2 style={{fontSize:'2rem',marginBottom:48}}>No enseñamos teoría aislada. Explicamos lo que hemos visto funcionar en casos reales.</h2>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:32,textAlign:'left'}}>
+      <CountStat to={10} suffix=" años" label="acompañando y defendiendo a personas y empresas." />
+      <CountStat to={400} label="sentencias favorables como respaldo de nuestra experiencia." />
+      <CountStat to={300} label="clientes activos confían en nuestros servicios." />
+    </div>
+  </section>);
+}
+
+function Casos(){
+  const casos=[
+    ['PRESCRIPCIÓN','Deuda antigua eliminada'],
+    ['CONDONACIONES','Rebaja de la deuda y mejores condiciones'],
+    ['DEFENSA PATRIMONIAL','Blindaje y defensa en remates'],
+    ['DEFENSA EN SII','Defensa administrativa sin llegar al cobro'],
+    ['DEFENSA EN TGR','Defensa ante embargos y proceso completo'],
+    ['DEFENSA DUAL','Estrategias desde el SII a TGR'],
+  ];
+  return (<section className="section wrap-narrow" style={{textAlign:'center'}} data-reveal>
+    <Eyebrow>Casos reales</Eyebrow>
+    <h2 style={{fontSize:'2.1rem',marginBottom:64}}>Posibilidades, no promesas.</h2>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'56px 32px',textAlign:'left',marginBottom:56}}>
+      {casos.map(([tag,t],i)=>(<div key={i} className="hover-lift" style={{display:'flex',flexDirection:'column',alignItems:'flex-start'}}>
+        <image-slot id={'caso-'+i} shape="circle" placeholder="Foto real del cliente" style={{width:64,height:64,marginBottom:20,boxShadow:'0 0 0 4px var(--brand-tint)'}}></image-slot>
+        <span style={{fontSize:'.72rem',fontWeight:800,color:'var(--brand)',letterSpacing:'.1em'}}>{tag}</span>
+        <h3 style={{fontSize:'1.08rem',marginTop:8,marginBottom:14,lineHeight:1.4,fontWeight:700}}>{t}</h3>
+        <span style={{fontSize:'.88rem',fontWeight:700,color:'var(--brand-soft)',cursor:'default'}}>Ver más › (próximamente)</span>
+      </div>))}
+    </div>
+    <div style={{borderTop:'1px solid var(--separator)',paddingTop:28}}>
+      <p style={{color:'var(--ink-soft)',fontSize:'.85rem',lineHeight:1.7,margin:0}}>Cada situación depende de tus antecedentes y la estrategia aplicada.<br/>Testimonios referenciales autorizados por nuestros clientes, en cumplimiento de la Ley N.º 21.719.</p>
+    </div>
+  </section>);
+}
+
+function Inscripcion(){
+  return (<section id="inscripcion" className="section wrap-narrow" data-reveal>
+    <div style={{textAlign:'center',marginBottom:48}}><Eyebrow>Comienza tu acompañamiento</Eyebrow><h2 style={{fontSize:'2.2rem'}}>Tu acceso, tu próximo paso.</h2></div>
+    <Card padding={44}>
+      <h3 style={{fontSize:'1.2rem',marginBottom:18}}>Esto es lo que activas hoy</h3>
+      <div style={{display:'grid',gap:10,marginBottom:24}}>
+        {['Acceso inmediato a los 10 módulos.','Acompañamiento durante 3 meses.','Consultas mediante tickets.','Sesiones en vivo.','Recursos descargables.','Historial dentro de la plataforma.'].map((f,i)=>(
+          <div key={i} style={{display:'flex',gap:10,fontSize:'.94rem',color:'var(--ink-soft)'}}><span style={{color:'var(--brand)',fontWeight:900}}>✓</span>{f}</div>
+        ))}
+      </div>
+      <div style={{display:'flex',alignItems:'baseline',gap:10,marginBottom:28,paddingBottom:28,borderBottom:'1px solid var(--separator)'}}>
+        <span style={{fontSize:'2.4rem',fontWeight:900,color:'var(--brand)',letterSpacing:'-0.02em'}}>$349.900</span>
+        <span style={{fontSize:'.85rem',color:'var(--ink-soft)'}}>Impuestos incluidos</span>
+      </div>
+      <h4 style={{fontSize:'.95rem',marginBottom:4}}>Tus datos</h4>
+      <p style={{fontSize:'.88rem',color:'var(--ink-soft)',marginBottom:22}}>Solo pedimos lo necesario para crear tu acceso.</p>
+      <form id="enrollment-form" data-payment-provider="flow" onSubmit={handleEnrollmentSubmit}>
+      <FormField label="Nombre completo" name="nombre" required placeholder="Ej.: María González" />
+      <FormField label="Correo electrónico" name="email" type="email" required placeholder="nombre@correo.cl" hint="Aquí recibirás tus accesos." />
+      <FormField label="Teléfono o WhatsApp" name="telefono" type="tel" placeholder="+56 9 1234 5678" />
+      <CheckRow name="acepta" required label={<>He leído y acepto los <a href="#legal-terminos">términos y condiciones</a>.</>} />
+      <Button variant="primary" block id="flow-checkout-btn" type="submit">Necesito ingresar</Button>
+      </form>
+      <p style={{textAlign:'center',fontSize:'.85rem',color:'var(--ink-soft)',marginTop:14}}><b>Garantía incondicional de 10 días</b> — revisa el contenido y solicita el reembolso si no cumple tus expectativas.</p>
+    </Card>
+  </section>);
+}
+
+function Faq(){
+  const qs=[
+    ['¿Cuándo comienza y cómo accedo?','El acceso es inmediato una vez confirmada la compra. Las instrucciones llegan al correo informado.'],
+    ['¿Cuánto demora la resolución de mi ticket?','El plazo normal de respuesta es de 48 horas desde recibida la consulta. Esto puede variar dependiendo de la complejidad del caso y si se requieren mayores antecedentes.'],
+    ['¿Qué significa "1 RUT y materia de cobranza fiscal"?','El acceso cubre la situación de un contribuyente y consultas vinculadas con su cobranza fiscal. Para varios clientes o materias diferentes, debe revisarse una modalidad distinta.'],
+    ['¿Las consultas por ticket resuelven mi caso completo?','Entregan orientación personalizada para que comprendas y actúes con mayor precisión. No sustituyen la representación judicial o administrativa.'],
+    ['¿Puedo enviar antecedentes por WhatsApp?','Por seguridad y trazabilidad, los antecedentes se envían mediante la plataforma habilitada para el programa.'],
+    ['¿Qué ocurre si no puedo asistir a una sesión?','Quedan grabadas y disponibles dentro de la plataforma durante los tres meses de acceso.'],
+    ['Mi caso es urgente, ¿me sirve?','El programa orienta y acompaña; si tu caso requiere una acción inmediata, se evalúa por separado si necesitas representación.'],
+    ['¿La inscripción incluye patrocinio de abogado?','No. La orientación y la representación legal son servicios distintos.'],
+    ['¿Emiten boleta o factura?','Sí, según el documento tributario que indiques al inscribirte.'],
+  ];
+  return (<section id="faq" className="section wrap-narrow" data-reveal>
+    <Eyebrow>Preguntas frecuentes</Eyebrow>
+    <h2 style={{fontSize:'2.1rem',marginBottom:40}}>Todo claro antes de ingresar.</h2>
+    {qs.map(([s,a],i)=>(<AccordionItem key={i} summary={s}><p>{a}</p></AccordionItem>))}
+  </section>);
+}
+
+function CierreFinal(){
+  return (<section className="section wrap-narrow" style={{textAlign:'center'}} data-reveal>
+    <Eyebrow>Tu siguiente paso</Eyebrow>
+    <h2 style={{fontSize:'2.2rem',marginBottom:20}}>Deja de decidir desde el miedo.</h2>
+    <p style={{fontSize:'1.1rem',color:'var(--ink-soft)',lineHeight:1.65,maxWidth:560,margin:'0 auto 32px'}}>Aprende a comprender tu deuda, ordenar tus antecedentes y reconocer cuándo puedes avanzar por tu cuenta y cuándo necesitas defensa profesional.</p>
+    <div style={{display:'flex',gap:14,justifyContent:'center',flexWrap:'wrap'}}>
+      <Button variant="primary" href="#inscripcion">Revisar la inscripción</Button>
+      <Button variant="ghost" href="#como-funciona">Volver a ver cómo funciona</Button>
+    </div>
+  </section>);
+}
+
+function App(){
+  return (<React.Fragment>
+    <Header links={NAV} ctaLabel="Quiero entrar" ctaHref="#inscripcion" secondaryLabel="Intranet" secondaryHref={INTRANET_HREF} />
+    <Hero /><MomentoQueCambia /><Problema /><ExisteUnCamino /><QuienesSomos /><ComoFunciona /><Deudas /><Modulos /><Beneficios /><Proof /><Casos /><Inscripcion /><Faq /><CierreFinal />
+    <Footer programLinks={PROGRAM_LINKS} legalLinks={LEGAL_LINKS} />
+  </React.Fragment>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script></body></html>

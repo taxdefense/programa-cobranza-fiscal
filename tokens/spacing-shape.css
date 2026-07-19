@@ -1,0 +1,10 @@
+:root{
+--radius-card:16px;--radius-soft:12px;--radius-input:10px;--radius-pill:999px;
+--shadow-card:0 1px 2px rgba(160,90,55,.05),0 8px 24px rgba(58,50,44,.07);
+--shadow-card-hover:0 2px 4px rgba(160,90,55,.08),0 14px 36px rgba(58,50,44,.11);
+--shadow-cta:0 6px 18px rgba(193,97,63,.30);
+--shadow-deep:0 24px 64px rgba(40,22,14,.24);
+--ease:cubic-bezier(.16,1,.3,1); /* @kind other */
+--header-h:68px;
+--space-1:8px;--space-2:12px;--space-3:16px;--space-4:20px;--space-5:24px;--space-6:32px;--space-7:44px;--space-8:56px;--space-9:88px;
+}

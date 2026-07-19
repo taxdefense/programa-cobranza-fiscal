@@ -1,0 +1,11 @@
+:root{
+--font:"Nunito Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+--text-display-lg:clamp(2.2rem,1.5rem + 3.4vw,3.7rem); /* @kind other */
+--text-display-md:clamp(1.8rem,1.4rem + 2vw,2.7rem); /* @kind other */
+--text-display-sm:clamp(1.4rem,1.2rem + 1vw,1.9rem); /* @kind other */
+--text-lead:clamp(1.02rem,1rem + .3vw,1.2rem); /* @kind other */
+--text-eyebrow:12px; /* @kind other */
+--weight-display:900;--weight-bold:800;--weight-semibold:700;--weight-body:400;
+--tracking-display:-0.02em;--tracking-eyebrow:.16em;
+--leading-tight:1.1;--leading-body:1.7;--leading-lead:1.65;
+}

@@ -1,0 +1,17 @@
+:root{
+/* Superficies — neutros cálidos */
+--surface:#fffdfa;--surface-alt:#faf3ec;--separator:#e8ddd2;
+/* Texto — carbón cálido */
+--ink:#3a322c;--ink-soft:#6c5f54;
+/* Marca — terracota cálido, acento único bloqueado en todo el sitio */
+--brand:#c1613f;--brand-text:#b1552f;
+--brand-dark:#9c4c2e;--brand-deep:#4a2a1f;
+--brand-soft:#f0ddd0;--brand-tint:#fbf1e9;
+--on-teal-accent:#f0c4a8;
+/* CTA — dorado cálido, exclusivo del botón principal fuera de fondos marca */
+--accent:#e3a857;--accent-dark:#c98d3d;
+/* Funcionales (uso racionado) — verde salvia para esperanza/logro, sin saturación clínica */
+--success:#5b9a6f;--alert:#c25b45;--whatsapp:#25d366;
+/* Estado provisional (badge-prov) */
+--provisional-fg:#8a5a0f;--provisional-bg:#fdf3e0;--provisional-border:#f0dcb4;
+}

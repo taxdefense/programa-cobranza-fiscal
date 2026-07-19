@@ -1,0 +1,187 @@
+<!-- @dsCard group="Landing" viewport="1280x900" name="Landing page" subtitle="Full click-through recreation of index.html" -->
+<!doctype html><html><head><meta charset="utf-8"><title>Programa Cobranza Fiscal — UI Kit</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0}.wrap{max-width:1160px;margin:0 auto;padding:0 24px}.section{padding:72px 0}.alt{background:var(--surface-alt)}.center{text-align:center;max-width:700px;margin:0 auto}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { Header, Footer, Eyebrow, Card, AccordionItem, FlowStep, StatBlock, Chip, PriceCard, FormField, CheckRow, Button, Notice, Badge } = window.JurDicamenteDesignSystem_8b9504;
+
+const NAV = [
+  {href:'#pilares', label:'El programa'},
+  {href:'#temario', label:'Temario'},
+  {href:'#metodo', label:'Cómo funciona'},
+  {href:'#faq', label:'Preguntas'},
+];
+const PROGRAM_LINKS = [{href:'#temario',label:'Temario'},{href:'#metodo',label:'Cómo funciona'},{href:'#faq',label:'Preguntas frecuentes'},{href:'#inscripcion',label:'Inscripción'}];
+const LEGAL_LINKS = [{href:'#legal-terminos',label:'Términos y condiciones'},{href:'#legal-privacidad',label:'Política de privacidad'},{href:'#legal-contacto',label:'Contacto comercial'}];
+
+function Hero(){
+  return (<header style={{padding:'72px 0 80px',background:'radial-gradient(90% 70% at 85% 10%, var(--brand-tint) 0%, transparent 60%), var(--surface)',borderBottom:'1px solid var(--separator)'}}>
+    <div className="wrap" style={{display:'grid',gridTemplateColumns:'1.1fr .9fr',gap:56,alignItems:'center'}}>
+      <div>
+        <Eyebrow>Programa de cobranza fiscal · 3 meses</Eyebrow>
+        <h1 style={{fontSize:'clamp(2.2rem,1.5rem + 3.4vw,3.7rem)',lineHeight:1.05,margin:'0 0 18px'}}>Deja de enfrentar la cobranza fiscal <span style={{color:'var(--brand)'}}>a ciegas.</span></h1>
+        <p style={{fontSize:'1.15rem',color:'var(--ink-soft)',lineHeight:1.65,maxWidth:540,marginBottom:30}}>Aprende a entender tu situación, recibe orientación experta y participa activamente en la búsqueda de una solución informada.</p>
+        <div style={{display:'flex',gap:14,flexWrap:'wrap',marginBottom:18}}>
+          <Button variant="primary" href="#inscripcion">Quiero conocer el programa</Button>
+          <Button variant="ghost" href="#metodo">Cómo funciona</Button>
+        </div>
+        <p style={{fontSize:'.85rem',color:'var(--ink-soft)'}}>El programa enseña, orienta y acompaña. No incluye representación administrativa ni judicial.</p>
+      </div>
+      <Card style={{padding:28}}>
+        <h2 style={{fontSize:'1.05rem',marginBottom:16,color:'var(--brand-dark)'}}>Lo que incluye tu acompañamiento</h2>
+        <ul style={{listStyle:'none',display:'grid',gap:12,padding:0,margin:0}}>
+          {['Acceso inmediato a los 10 módulos.','Consultas personalizadas por tickets.','3 sesiones mensuales en vivo.','Comunidad, guías y recursos.'].map((t,i)=>(
+            <li key={i} style={{display:'flex',gap:12,fontSize:'.95rem',color:'var(--ink-soft)'}}><span style={{color:'var(--brand)',fontWeight:900}}>✓</span>{t}</li>
+          ))}
+        </ul>
+      </Card>
+    </div>
+  </header>);
+}
+
+function Pains(){
+  const items=[
+    ['Recibiste una notificación y no sabes qué significa.','¿Es grave? ¿Cuánto tiempo tengo? ¿Qué puede pasar?'],
+    ['No sabes de dónde salió la deuda.','Pensabas que todo estaba en orden hasta que Tesorería comenzó a cobrarte.'],
+    ['Nadie te explica qué puedes hacer con tu deuda CAE.','Estás cansado de que te juzguen por no poder pagar.'],
+    ['No entiendes quién te está cobrando.','SII, TGR u otra institución: sientes que te envían de un lugar a otro.'],
+  ];
+  return (<section className="section alt"><div className="wrap">
+    <Eyebrow>Quizás esto también te pasa</Eyebrow>
+    <h2 style={{fontSize:'2rem',maxWidth:700,marginBottom:36}}>Las dudas cambian. La sensación de estar perdido es la misma.</h2>
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
+      {items.map(([t,p],i)=>(
+        <div key={i} style={{background:'#fff',border:'1px solid var(--separator)',borderLeft:'4px solid var(--brand)',borderRadius:'var(--radius-soft)',padding:'18px 20px'}}>
+          <b style={{display:'block',marginBottom:3}}>{t}</b><span style={{color:'var(--ink-soft)',fontSize:'.95rem'}}>{p}</span>
+        </div>
+      ))}
+    </div>
+  </div></section>);
+}
+
+function Metodo(){
+  return (<section id="pilares" className="section"><div className="wrap">
+    <Eyebrow>No es otro curso grabado</Eyebrow>
+    <h2 style={{fontSize:'2rem',maxWidth:700,marginBottom:36}}>Un proceso de aprendizaje, acompañamiento y autonomía.</h2>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20}}>
+      {[['Formación práctica','Explicaciones breves y claras, sin clases interminables.'],['Orientación personalizada','Expones tu situación y recibes respuesta estructurada por tickets.'],['Comunidad y sesiones en vivo','Actualizaciones y espacios periódicos para mantenerte informado.']].map(([t,p],i)=>(
+        <Card key={i}><span style={{fontSize:13,fontWeight:900,color:'var(--brand)',letterSpacing:'.1em',display:'block',marginBottom:10}}>{String(i+1).padStart(2,'0')}</span><h3 style={{fontSize:'1.15rem',marginBottom:10}}>{t}</h3><p style={{fontSize:'.94rem',color:'var(--ink-soft)'}}>{p}</p></Card>
+      ))}
+    </div>
+  </div></section>);
+}
+
+function ComoFunciona(){
+  return (<section id="metodo" className="section alt"><div className="wrap">
+    <Eyebrow>Así funciona</Eyebrow>
+    <h2 style={{fontSize:'2rem',maxWidth:700,marginBottom:36}}>De tu pregunta a una decisión informada.</h2>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:18,marginBottom:24}}>
+      <FlowStep number={1} title="Envías tu consulta y respaldos">Relatas lo que ocurre con tus propias palabras.</FlowStep>
+      <FlowStep number={2} title="El equipo revisa y orienta">Recibes análisis razonado y próximos pasos.</FlowStep>
+      <FlowStep number={3} title="Decides con más claridad">Sabes cuándo actuar solo o cuándo necesitas defensa.</FlowStep>
+    </div>
+    <Notice><b>Sin sorpresas:</b> no es un chat instantáneo 24/7 ni un patrocinio legal. Es un sistema de formación y orientación experta, con trazabilidad.</Notice>
+  </div></section>);
+}
+
+function Deudas(){
+  const chips=['IVA, renta y PPM','Contribuciones','Giros del SII','Multas administrativas','Crédito CAE','Crédito solidario','Patentes mineras','Derechos de agua'];
+  return (<section className="section"><div className="wrap">
+    <Eyebrow>Una misma lógica de cobro</Eyebrow>
+    <h2 style={{fontSize:'2rem',maxWidth:700,marginBottom:28}}>Tu deuda puede ser distinta. El sistema que la cobra suele ser el mismo.</h2>
+    <div style={{display:'flex',flexWrap:'wrap',gap:12}}>{chips.map((c)=><Chip key={c}>{c}</Chip>)}</div>
+  </div></section>);
+}
+
+function Temario(){
+  const modulos=[
+    ['MÓDULO 1','SII y TGR: quién es quién','Comprende quién determina y quién cobra, para leer mejor el escenario.'],
+    ['MÓDULO 4','La notificación y el mito de los "10 días"','Entiende cómo parte el proceso y qué significa cada plazo.'],
+    ['MÓDULO 6','Perdonazos tributarios: cuándo sí y cuándo no','Identifica cuándo hacer convenios y cuándo conviene detenerse.'],
+    ['MÓDULO 10','Información es poder: decide la próxima jugada','Integra lo aprendido para decidir tu próximo paso.'],
+  ];
+  return (<section id="temario" className="section alt"><div className="wrap" style={{maxWidth:820}}>
+    <Eyebrow>Temario del programa</Eyebrow>
+    <h2 style={{fontSize:'2rem',marginBottom:8}}>10 módulos de 3 minutos para entender la cobranza fiscal</h2>
+    <p style={{color:'var(--ink-soft)',marginBottom:32}}>Cápsulas grabadas, disponibles a tu ritmo durante los 3 meses. Se muestran 4 de 10 módulos.</p>
+    {modulos.map(([tag,s,body],i)=>(<AccordionItem key={i} tag={tag} summary={s} defaultOpen={i===0}><p>{body}</p></AccordionItem>))}
+  </div></section>);
+}
+
+function Proof(){
+  return (<section className="section" style={{background:'linear-gradient(160deg,var(--brand) 0%, var(--brand-dark) 100%)',color:'#fff'}}><div className="wrap">
+    <Eyebrow dark>Experiencia convertida en aprendizaje</Eyebrow>
+    <h2 style={{fontSize:'2rem',maxWidth:760,color:'#fff',marginBottom:36}}>No enseñamos teoría aislada. Explicamos lo que hemos visto funcionar en casos reales.</h2>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:18}}>
+      <StatBlock onDark value="+10 años" label="acompañando y defendiendo a personas y empresas." />
+      <StatBlock onDark value="+400" label="sentencias favorables como respaldo de nuestra experiencia." />
+      <StatBlock onDark value="+300" label="clientes activos confían en nuestros servicios." />
+    </div>
+  </div></section>);
+}
+
+function Precio(){
+  return (<section id="inscripcion" className="section" style={{background:'linear-gradient(145deg,#073e4b,#0a8398)',color:'#fff'}}>
+    <div className="wrap center"><Eyebrow dark>Más que un programa: una transformación</Eyebrow>
+    <h2 style={{color:'#fff',fontSize:'1.8rem',marginBottom:32}}>Aprende a comprender el sistema, ordenar tu situación y avanzar acompañado durante tres meses.</h2></div>
+    <PriceCard title="Programa de Cobranza Fiscal"
+      features={['Acceso inmediato a los 10 módulos.','Acompañamiento durante tres meses.','Consultas personalizadas mediante tickets.','Sesiones en vivo, actualizaciones y recursos.']}
+      price="$349.900" priceNote="Impuestos incluidos"
+      guarantee={<><b>Garantía incondicional de 10 días.</b><br/>Ingresa, revisa el contenido y solicita el reembolso si no cumple tus expectativas.</>}
+      ctaLabel="Necesito ingresar" ctaHref="#form"
+      footnote="La inscripción no incluye representación administrativa ni judicial. Si tu caso la requiere, se cotiza por separado." />
+  </section>);
+}
+
+function Formulario(){
+  return (<section id="form" className="section alt"><div className="wrap" style={{maxWidth:640}}>
+    <Eyebrow>Inscripción segura</Eyebrow>
+    <h2 style={{fontSize:'1.8rem',marginBottom:24}}>Estás a un paso de dejar de improvisar.</h2>
+    <Card>
+      <FormField label="Nombre completo" placeholder="Ej.: María González" />
+      <FormField label="Correo electrónico" type="email" placeholder="nombre@correo.cl" hint="Aquí recibirás tus accesos." />
+      <FormField label="Teléfono o WhatsApp" type="tel" placeholder="+56 9 1234 5678" />
+      <FormField label="Documento tributario" as="select" options={['Boleta — persona natural','Factura — empresa o profesional']} />
+      <CheckRow label={<>He leído y acepto los <a href="#">términos y condiciones</a> y la garantía de 10 días.</>} />
+      <Button variant="primary" block>Activar mi acceso y continuar al pago</Button>
+    </Card>
+  </div></section>);
+}
+
+function Faq(){
+  const qs=[
+    ['¿Cuánto dura el programa?','Tres meses desde que entras — el acceso es inmediato.'],
+    ['¿Las consultas por ticket resuelven mi caso completo?','Entregan orientación personalizada; no sustituyen representación judicial o administrativa.'],
+    ['¿Puedo arrepentirme después de pagar?','Sí. Garantía incondicional de 10 días, reembolso del 100%.'],
+    ['¿La inscripción incluye patrocinio de abogado?','No. La orientación y la representación legal son servicios distintos.'],
+  ];
+  return (<section id="faq" className="section"><div className="wrap" style={{maxWidth:820}}>
+    <Eyebrow>Preguntas frecuentes</Eyebrow>
+    <h2 style={{fontSize:'2rem',marginBottom:32}}>Todo claro antes de ingresar.</h2>
+    {qs.map(([s,a],i)=>(<AccordionItem key={i} summary={s}><p>{a}</p></AccordionItem>))}
+    <p style={{marginTop:16,fontSize:'.85rem',color:'var(--ink-soft)'}}>Tiempo de respuesta de tickets: <Badge>por definir</Badge> — se informa antes de contratar.</p>
+  </div></section>);
+}
+
+function StickyCTA(){
+  return (<div style={{position:'fixed',bottom:0,left:0,right:0,zIndex:90,background:'rgba(255,255,255,.96)',backdropFilter:'blur(10px)',borderTop:'1px solid var(--separator)',padding:'10px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+    <span style={{fontSize:'.8rem',color:'var(--ink-soft)'}}>Programa · 3 meses · garantía de 10 días</span>
+    <Button variant="primary" size="sm" href="#inscripcion">Ver inscripción</Button>
+  </div>);
+}
+
+function App(){
+  return (<React.Fragment>
+    <Header links={NAV} activeHref="#pilares" ctaLabel="Quiero entrar" ctaHref="#inscripcion" />
+    <Hero /><Pains /><Metodo /><ComoFunciona /><Deudas /><Temario /><Proof /><Precio /><Formulario /><Faq />
+    <Footer programLinks={PROGRAM_LINKS} legalLinks={LEGAL_LINKS} />
+    <StickyCTA />
+  </React.Fragment>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script></body></html>
