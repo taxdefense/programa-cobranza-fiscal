@@ -26,6 +26,8 @@ body{margin:0}
 4. Backend sugerido: Freshdesk como tiquetera con portal de cliente; Pipedrive se mantiene para tramitación legal (casos que escalan a defensa); conector nativo Freshdesk<->Pipedrive para handoff automático de casos.
 5. Placeholders <image-slot> (fotos y videos) se reemplazan por los assets reales del cliente — no generar contenido nuevo ahí.
 6. Ejecutar SOLO cambios robustos y aislados (integraciones, wiring de formularios/links). Cualquier cambio visual o de copy debe volver al diseño para aprobación.
+7. (2026-07-19) Fix de responsividad mobile aplicado por Claude Code, iterado y confirmado en Claude Design: los grids de 2/3 columnas colapsan a 1 columna bajo ~640px vía el hook useIsNarrow() (JS/matchMedia, no CSS nuevo). El menú mobile del Header (hamburguesa) usa matchMedia(980px) + nowrap en components/navigation/Header.jsx — ya recompilado en ../../_ds_bundle.js.
+8. (2026-07-20) Wiring de pago Flow + alta Freshdesk reaplicado sobre la versión con fix responsivo — ver api/flow/create-payment.js, api/flow/confirm.js y docs/integraciones-flow-freshdesk.md.
 -->
 </head><body><div id="root"></div>
 <script type="text/babel">
@@ -71,9 +73,28 @@ async function handleEnrollmentSubmit(e){
   }
 }
 
+/* Fix (Claude Code, 2026-07-19): hook compartido para colapsar grids de 2/3 columnas a 1
+   columna en mobile. Se usa matchMedia en vez de clases CSS nuevas para no tocar el sistema
+   de estilos (todo el resto de la página sigue siendo inline style + tokens). */
+function useIsNarrow(breakpoint){
+  const bp = breakpoint || 640;
+  const query = '(max-width:' + bp + 'px)';
+  const [narrow, setNarrow] = React.useState(
+    typeof window !== 'undefined' ? window.matchMedia(query).matches : false
+  );
+  React.useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setNarrow(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [query]);
+  return narrow;
+}
+
 function Hero(){
+  const narrow = useIsNarrow();
   return (<header style={{padding:'64px 0 0'}}>
-    <div className="wrap" style={{display:'grid',gridTemplateColumns:'1.15fr .85fr',gap:64,alignItems:'center'}}>
+    <div className="wrap" style={{display:'grid',gridTemplateColumns:narrow?'1fr':'1.15fr .85fr',gap:narrow?32:64,alignItems:'center'}}>
       <div data-reveal>
         <Eyebrow>Programa de acompañamiento en cobranza fiscal</Eyebrow>
         <h1 style={{fontSize:'clamp(2.4rem,1.6rem + 3.2vw,4rem)',lineHeight:1.06,letterSpacing:'-0.02em',margin:'0 0 22px',maxWidth:640}}>Deja de enfrentar tu deuda fiscal <span style={{color:'var(--brand)'}}>a ciegas.</span></h1>
@@ -83,7 +104,7 @@ function Hero(){
       </div>
       <div data-reveal style={{position:'relative'}}>
         <image-slot id="hero-photo" shape="rounded" radius="24" placeholder="Foto real: persona revisando documentos con calma, en un espacio cotidiano y luminoso" style={{width:'100%',aspectRatio:'4/4.6',display:'block'}}></image-slot>
-        <div className="hover-lift" style={{position:'absolute',left:-28,bottom:-28,background:'#fff',borderRadius:20,boxShadow:'var(--shadow-card-hover)',padding:'26px 28px',maxWidth:280}}>
+        <div className="hover-lift" style={{position:narrow?'static':'absolute',left:narrow?undefined:-28,bottom:narrow?undefined:-28,marginTop:narrow?20:0,background:'#fff',borderRadius:20,boxShadow:'var(--shadow-card-hover)',padding:'26px 28px',maxWidth:narrow?'none':280}}>
           <div style={{fontSize:'.72rem',fontWeight:800,textTransform:'uppercase',letterSpacing:'.1em',color:'var(--brand)',marginBottom:10}}>Tu próximo paso</div>
           <p style={{fontSize:'.94rem',color:'var(--ink-soft)',lineHeight:1.55,margin:0}}>Entender tu situación es el primer paso para dejar de sentirte perdido frente al SII y la Tesorería.</p>
         </div>
@@ -102,6 +123,7 @@ function MomentoQueCambia(){
 }
 
 function Problema(){
+  const narrow = useIsNarrow();
   const items=[
     ['¿Qué significa esta notificación?','Todavía no sé si debo preocuparme, y por cuánto tiempo.'],
     ['No sé de dónde salió esta deuda.','Pensé que todo estaba en orden hasta que empezaron a cobrarme.'],
@@ -112,7 +134,7 @@ function Problema(){
   ];
   return (<section className="section wrap" data-reveal>
     <div style={{textAlign:'center',marginBottom:48}}><Eyebrow>Quizás esto también te pasa</Eyebrow><h2 style={{fontSize:'2rem',maxWidth:700,margin:'0 auto'}}>Las dudas cambian. La sensación de estar perdido es la misma.</h2></div>
-    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:44}}>
+    <div style={{display:'grid',gridTemplateColumns:narrow?'1fr':'1fr 1fr',gap:20,marginBottom:44}}>
       {items.map(([t,p],i)=>(<div key={i} style={{position:'relative',padding:'26px 24px 22px',overflow:'hidden'}}>
         <span style={{position:'absolute',top:10,left:16,fontSize:'2.6rem',fontWeight:900,color:'var(--brand)',opacity:.35,lineHeight:1,fontFamily:'Georgia,serif'}}>&ldquo;</span>
         <b style={{display:'block',marginBottom:6,marginTop:14,fontSize:'1.02rem',position:'relative'}}>{t}</b><span style={{color:'var(--ink-soft)',fontSize:'.94rem',lineHeight:1.55,position:'relative'}}>{p}</span>
@@ -138,7 +160,8 @@ function ExisteUnCamino(){
 }
 
 function QuienesSomos(){
-  return (<section className="section wrap" style={{display:'grid',gridTemplateColumns:'.9fr 1.1fr',gap:64,alignItems:'center'}} data-reveal>
+  const narrow = useIsNarrow();
+  return (<section className="section wrap" style={{display:'grid',gridTemplateColumns:narrow?'1fr':'.9fr 1.1fr',gap:narrow?32:64,alignItems:'center'}} data-reveal>
     <div style={{position:'relative',borderRadius:24,overflow:'hidden'}}><image-slot id="estudio-video" shape="rounded" radius="24" placeholder="Video real del equipo o del estudio (60 seg) — cercano, sin poses" style={{width:'100%',aspectRatio:'4/4.4',display:'block'}}></image-slot><div style={{position:'absolute',inset:0,display:'grid',placeItems:'center',pointerEvents:'none'}}><div style={{width:64,height:64,borderRadius:'50%',background:'rgba(255,255,255,.92)',boxShadow:'var(--shadow-card-hover)',display:'grid',placeItems:'center'}}><div style={{width:0,height:0,borderTop:'11px solid transparent',borderBottom:'11px solid transparent',borderLeft:'18px solid var(--brand)',marginLeft:4}}></div></div></div></div>
     <div>
       <Eyebrow>Quiénes somos</Eyebrow>
@@ -150,10 +173,11 @@ function QuienesSomos(){
 }
 
 function ComoFunciona(){
+  const narrow = useIsNarrow();
   const steps=[['1','Ganas formación','Aprendes lo esencial para entender tu situación, sin tecnicismos.'],['2','Recibes orientación','Análisis humano y razonado, con próximos pasos concretos.'],['3','Decides con claridad','Sabes cuándo puedes avanzar solo y cuándo necesitas defensa.']];
   return (<section id="como-funciona" className="section wrap" data-reveal>
     <div style={{textAlign:'center',marginBottom:64}}><Eyebrow>Cómo funciona</Eyebrow><h2 style={{fontSize:'2.1rem'}}>Tres pasos, sin letra chica.</h2></div>
-    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:40,marginBottom:56}}>
+    <div style={{display:'grid',gridTemplateColumns:narrow?'1fr':'repeat(3,1fr)',gap:40,marginBottom:56}}>
       {steps.map(([n,t,p],i)=>(<div key={i} style={{textAlign:'center'}}>
         <div style={{width:64,height:64,margin:'0 auto 20px',borderRadius:'50%',background:'var(--brand-tint)',color:'var(--brand)',fontWeight:900,fontSize:'1.3rem',display:'grid',placeItems:'center'}}>{n}</div>
         <h3 style={{fontSize:'1.2rem',marginBottom:10}}>{t}</h3>
@@ -204,11 +228,12 @@ function Modulos(){
 }
 
 function Beneficios(){
+  const narrow = useIsNarrow();
   const no=['Un chat instantáneo disponible 24/7.','Una promesa de resultado o de "solución garantizada".','Clases genéricas sin relación con tu caso.'];
   const si=['Consultas revisadas por el equipo profesional del estudio.','Orientación honesta, incluyendo cuándo necesitas algo más que este programa.','Un historial trazable de todo tu proceso.'];
   return (<section className="section wrap" data-reveal>
     <div style={{textAlign:'center',marginBottom:56}}><Eyebrow>Límites claros desde el principio</Eyebrow><h2 style={{fontSize:'2.1rem'}}>No es un curso grabado. Es un proceso completo.</h2></div>
-    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:32}}>
+    <div style={{display:'grid',gridTemplateColumns:narrow?'1fr':'1fr 1fr',gap:32}}>
       <Card padding={32}>
         <h3 style={{fontSize:'1rem',fontWeight:800,color:'var(--ink-soft)',marginBottom:18}}>Esto no es</h3>
         <div style={{display:'grid',gap:14}}>{no.map((t,i)=>(<div key={i} style={{display:'flex',gap:10,fontSize:'.98rem',color:'var(--ink-soft)'}}><span style={{color:'var(--ink-soft)'}}>✕</span>{t}</div>))}</div>
@@ -254,10 +279,11 @@ function CountStat({ to, suffix = '', label, prefix = '+' }) {
 }
 
 function Proof(){
+  const narrow = useIsNarrow();
   return (<section className="section wrap-narrow" style={{textAlign:'center'}} data-reveal>
     <Eyebrow>Experiencia convertida en aprendizaje</Eyebrow>
     <h2 style={{fontSize:'2rem',marginBottom:48}}>No enseñamos teoría aislada. Explicamos lo que hemos visto funcionar en casos reales.</h2>
-    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:32,textAlign:'left'}}>
+    <div style={{display:'grid',gridTemplateColumns:narrow?'1fr':'repeat(3,1fr)',gap:32,textAlign:'left'}}>
       <CountStat to={10} suffix=" años" label="acompañando y defendiendo a personas y empresas." />
       <CountStat to={400} label="sentencias favorables como respaldo de nuestra experiencia." />
       <CountStat to={300} label="clientes activos confían en nuestros servicios." />
@@ -266,6 +292,7 @@ function Proof(){
 }
 
 function Casos(){
+  const narrow = useIsNarrow();
   const casos=[
     ['PRESCRIPCIÓN','Deuda antigua eliminada'],
     ['CONDONACIONES','Rebaja de la deuda y mejores condiciones'],
@@ -277,7 +304,7 @@ function Casos(){
   return (<section className="section wrap-narrow" style={{textAlign:'center'}} data-reveal>
     <Eyebrow>Casos reales</Eyebrow>
     <h2 style={{fontSize:'2.1rem',marginBottom:64}}>Posibilidades, no promesas.</h2>
-    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'56px 32px',textAlign:'left',marginBottom:56}}>
+    <div style={{display:'grid',gridTemplateColumns:narrow?'1fr':'repeat(3,1fr)',gap:narrow?'40px':'56px 32px',textAlign:'left',marginBottom:56}}>
       {casos.map(([tag,t],i)=>(<div key={i} className="hover-lift" style={{display:'flex',flexDirection:'column',alignItems:'flex-start'}}>
         <image-slot id={'caso-'+i} shape="circle" placeholder="Foto real del cliente" style={{width:64,height:64,marginBottom:20,boxShadow:'0 0 0 4px var(--brand-tint)'}}></image-slot>
         <span style={{fontSize:'.72rem',fontWeight:800,color:'var(--brand)',letterSpacing:'.1em'}}>{tag}</span>
